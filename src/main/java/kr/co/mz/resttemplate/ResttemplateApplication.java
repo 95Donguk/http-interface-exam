@@ -31,7 +31,7 @@ public class ResttemplateApplication {
 
       ExchangeRateApi api = factory.createClient(ExchangeRateApi.class);
       Map<String, Map<String, BigDecimal>> res = api.getLatest();
-      System.out.println(res.get("rates").get("KRW"));
+      System.out.println("1USD = " + res.get("rates").get("KRW") + "WON");
     };
   }
 
