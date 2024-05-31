@@ -24,7 +24,7 @@ public class ResttemplateApplication {
         // https://open.er-api.com/v6/latest
         RestTemplate rt = new RestTemplate();
       Map<String, Map<String, BigDecimal>> res = rt.getForObject("https://open.er-api.com/v6/latest", Map.class);
-      System.out.println(res.get("rates").get("KRW"));
+      System.out.println("1USD = " + res.get("rates").get("KRW") + "WON");
     };
   }
 
