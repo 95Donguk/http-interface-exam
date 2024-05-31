@@ -22,10 +22,22 @@ public class ResttemplateApplication {
     return args -> {
         // 환율 정보 가져오는 오픈 API
         // https://open.er-api.com/v6/latest
-        RestTemplate rt = new RestTemplate();
-      Map<String, Map<String, BigDecimal>> res = rt.getForObject("https://open.er-api.com/v6/latest", Map.class);
+      RestTemplate restTemplate = new RestTemplate();
+      restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory("https://open.er-api.com/"));
+
+      // 메서드가 호출될 때 요청을 수행하는 프록시를 만들어야 합니다.
+      RestTemplateAdapter adapter = RestTemplateAdapter.create(restTemplate);
+      HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+
+      ExchangeRateApi api = factory.createClient(ExchangeRateApi.class);
+      Map<String, Map<String, BigDecimal>> res = api.getLatest();
       System.out.println(res.get("rates").get("KRW"));
     };
+  }
+
+  interface ExchangeRateApi {
+    @GetExchange("/v6/latest")
+    Map getLatest();
   }
 
   public static void main(String[] args) {
